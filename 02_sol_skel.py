@@ -6,8 +6,8 @@ import random
 from multiprocessing import Lock, Condition, Manager, Process
 from multiprocessing import Value
 
-SOUTH = "north"
-NORTH = "south"
+SOUTH = 1
+NORTH = 0
 
 NCARS = 10
 
@@ -24,9 +24,10 @@ class Monitor():
 		self.mutex.acquire()
 		if direction == NORTH:
 			self.open_north.wait_for(lambda: self.actual_direction.value == direction or self.cars.value == 0)
-	            
+			self.actual_direction = NORTH
 		else:
 			self.open_south.wait_for(lambda: self.actual_direction.value == direction or self.cars.value == 0)
+			self.actual_direction = SOUTH
 	
 		self.cars.value += 1
 		self.mutex.release()
@@ -39,8 +40,9 @@ class Monitor():
 				self.open_south.notify_all()
 				self.open_north.notify_all()
 			else:
-				self.open_south.notify_all()
 				self.open_north.notify_all()
+				self.open_south.notify_all()
+				
 		self.mutex.release()
 
 def delay(n=3):
