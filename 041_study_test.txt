@@ -1,0 +1,60 @@
+Test con 04_sol_skel.py
+-   Parece que funciona bien salvo la inicializacion
+
+car 1 direction 0 created
+car 2 direction 0 created
+car 3 direction 1 created
+car 4 direction 0 created
+car 5 direction 1 created
+car 4 heading 0 wants to enter
+car 2 heading 0 wants to enter
+car 5 heading 1 wants to enter
+car 5 heading 1 enters the tunnel
+car 1 heading 0 wants to enter
+car 6 direction 1 created
+car 5 heading 1 leaving the tunnel
+Abre norte
+car 5 heading 1 out of the tunnel
+car 1 heading 0 enters the tunnel
+car 7 direction 0 created
+car 3 heading 1 wants to enter
+car 8 direction 1 created
+car 9 direction 1 created
+car 1 heading 0 leaving the tunnel
+Abre sur
+car 1 heading 0 out of the tunnel
+car 3 heading 1 enters the tunnel
+car 10 direction 0 created
+car 7 heading 0 wants to enter
+car 3 heading 1 leaving the tunnel
+Abre norte
+car 3 heading 1 out of the tunnel
+car 2 heading 0 enters the tunnel
+car 4 heading 0 enters the tunnel
+car 7 heading 0 enters the tunnel
+car 9 heading 1 wants to enter
+car 6 heading 1 wants to enter
+car 7 heading 0 leaving the tunnel
+car 7 heading 0 out of the tunnel
+car 2 heading 0 leaving the tunnel
+car 2 heading 0 out of the tunnel
+car 4 heading 0 leaving the tunnel
+Abre sur
+car 4 heading 0 out of the tunnel
+car 9 heading 1 enters the tunnel
+car 6 heading 1 enters the tunnel
+car 9 heading 1 leaving the tunnel
+car 9 heading 1 out of the tunnel
+car 8 heading 1 wants to enter
+car 10 heading 0 wants to enter
+car 6 heading 1 leaving the tunnel
+Abre norte
+car 6 heading 1 out of the tunnel
+car 10 heading 0 enters the tunnel
+car 10 heading 0 leaving the tunnel
+Abre sur
+car 8 heading 1 enters the tunnel
+car 10 heading 0 out of the tunnel
+car 8 heading 1 leaving the tunnel
+Abre norte
+car 8 heading 1 out of the tunnel
