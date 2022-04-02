@@ -1,0 +1,58 @@
+Test con 07_sol_skel.py
+-   Parece que funciona bien y corrige el problema de justicia
+
+car 1 direction S created
+car 2 direction N created
+car 1 heading S wants to enter
+car 1 heading S enters the tunnel
+car 1 heading S leaving the tunnel
+Abre sur -  0
+car 1 heading S out of the tunnel
+car 3 direction N created
+car 3 heading N wants to enter
+car 3 heading N enters the tunnel
+car 2 heading N wants to enter
+car 4 direction N created
+car 5 direction S created
+car 4 heading N wants to enter
+car 5 heading S wants to enter
+car 6 direction N created
+car 7 direction N created
+car 8 direction S created
+car 6 heading N wants to enter
+car 3 heading N leaving the tunnel
+Abre norte -  1
+car 3 heading N out of the tunnel
+car 5 heading S enters the tunnel
+car 9 direction N created
+car 9 heading N wants to enter
+car 7 heading N wants to enter
+car 10 direction N created
+car 10 heading N wants to enter
+car 8 heading S wants to enter
+car 5 heading S leaving the tunnel
+Abre sur -  6
+car 5 heading S out of the tunnel
+car 9 heading N enters the tunnel
+car 4 heading N enters the tunnel
+car 2 heading N enters the tunnel
+car 6 heading N enters the tunnel
+car 7 heading N enters the tunnel
+car 10 heading N enters the tunnel
+car 10 heading N leaving the tunnel
+car 10 heading N out of the tunnel
+car 9 heading N leaving the tunnel
+car 9 heading N out of the tunnel
+car 7 heading N leaving the tunnel
+car 7 heading N out of the tunnel
+car 6 heading N leaving the tunnel
+car 6 heading N out of the tunnel
+car 2 heading N leaving the tunnel
+car 2 heading N out of the tunnel
+car 4 heading N leaving the tunnel
+Abre norte -  1
+car 4 heading N out of the tunnel
+car 8 heading S enters the tunnel
+car 8 heading S leaving the tunnel
+Abre sur -  0
+car 8 heading S out of the tunnel
