@@ -10,7 +10,7 @@ Se configura el monitor con dos semáforos. Con la condición de que los coches 
     2.-Los coches de una misma dirección no tienen establecido ningún orden. Un coche esperando en una dirección puede entrar después de otro coche posterior a él en la misma dirección.
 
 # 02_sol_skel
-Funciona de manera similar a la versión anterior. Se controlan el paso de los coches comprobando la dirección de circulación del tunel, de manera que permite el paso si coinciden con la propia dirección. Y se cambia esta cuando no haya coches y pase un coche que actualize esta dirección.
+Funciona de manera similar a la versión anterior. Se controla el paso de los coches comprobando la dirección de circulación del tunel, de manera que permite el paso si coinciden con la propia dirección. Y se cambia esta cuando no haya coches y pase un coche que actualize esta dirección.
 
 # 03_sol_skel
 (Implementado)(Falta comprobar)
@@ -26,4 +26,15 @@ Esto lo controla la variables: "north_cars_waiting" y "south_cars_waiting" y los
 Las variables K1 y K2 es la cota de coches esperando. Estaría bien hacer que esta variable no fuese constante. Haciendo que por cada coche que pase en una dirección, la variable disminuya de valor hasta 0, permitiendo que los coches en la otra dirección sean más posibles para pasar, ya que restringe los coches de su propia dirección.
 Después se debería reestablecer su valor cuando los coches de la otra dirección empiecen a pasar.
 
-Se ha hecho pruebas para ver que sigue funcionando igual que la versión 1. Pero no se comprobado que solucione el problema. Teóricamente parece que sí lo soluciona. <3
+Se ha hecho pruebas para ver que sigue funcionando igual que la versión 1. Pero no se comprobado que solucione el problema. Teóricamente parece que sí lo soluciona.
+
+# 06_sol_skel
+
+# 07_sol_skel
+Solucionado el problema de justicia. Se inicializa la dirección inicial del túnel a "none". Contamos con variables "north_cars" y "south_cars" que nos indican el número de coches que hay dentro del túnel en cada dirección, y "north_waiting" y "south_waiting" que indican el número de coches que están esperando a entrar en el túnel en cada dirección. Tenemos los siguientes semáforos:
+- "north_entry" / "south_entry" para dejar pasar al norte / sur.
+- "north_queue" / "south_queue" para dejar pasar al norte / sur a la cola del túnel.
+
+Cuando un coche quiere entrar en el túnel se pone a la cola si su dirección es la contraria a la del túnel o es nula. Entra cuando no hay en el túnel coches circulando en sentido contrario al suyo.
+
+Cuando un coche abandona el túnel y no hay coches dentro podemos cambiar la dirección de este siempre que no haya más coches esperando a entrar en la misma dirección que el que acaba de salir, esto evita que haya bloqueos.
