@@ -34,12 +34,12 @@ class Monitor():
 			self.traffic_south.value += 1
 			
 		if self.actual_direction == NORTH:
-			self.south_semaphore.notify()
 			self.north_semaphore.notify()
+			self.south_semaphore.notify()
 		
 		else:
-			self.north_semaphore.notify()
 			self.south_semaphore.notify()
+			self.north_semaphore.notify()
 		
 		self.mutex.release()
 				
@@ -53,23 +53,24 @@ class Monitor():
 			
 		if (self.traffic_north.value + self.traffic_south.value == 0):
 			if direction == NORTH:
-				if self.waiting_south.value > 0: #self.waiting_north.value:
+				if self.waiting_south.value > 0: 
 					self.actual_direction.value = SOUTH
 				else:
 					self.actual_direction.value = NORTH
 					
 			else:
-				if self.waiting_north.value > 0: #self.waiting_south.value:
+				if self.waiting_north.value > 0: 
 					self.actual_direction = NORTH
 				else:
 					self.actual_direction = SOUTH
+					
 		if self.actual_direction == NORTH:
-			self.south_semaphore.notify()
 			self.north_semaphore.notify()
+			self.south_semaphore.notify()
 		
 		else:
-			self.north_semaphore.notify()
 			self.south_semaphore.notify()
+			self.north_semaphore.notify()
 		
 		self.mutex.release()
 		
