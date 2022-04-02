@@ -3,7 +3,7 @@ Solution to the one-way tunnel
 """
 import time
 import random
-from multiprocessing import Lock, Condition, Manager, Process
+from multiprocessing import Lock, Condition, Process
 from multiprocessing import Value
 
 SOUTH = "north"
@@ -14,7 +14,7 @@ NCARS = 10
 class Monitor():
     def __init__(self):
         self.mutex = Lock()
-        self.manager = Manager()
+
         self.north_cars = Value('i', 0)
         self.south_cars = Value('i', 0)
 
@@ -25,7 +25,7 @@ class Monitor():
     def wants_enter(self, direction):
         self.mutex.acquire()
 
-        if direction == 'north':
+        if direction == SOUTH:
             self.open_north.wait_for(lambda: self.south_cars.value == 0)
             self.north_cars.value += 1
         else:
@@ -37,7 +37,7 @@ class Monitor():
     def leaves_tunnel(self, direction):
         self.mutex.acquire()
 
-        if direction == 'north':
+        if direction == NORTH:
             self.north_cars.value -= 1
             self.open_south.notify_all()
         else:
