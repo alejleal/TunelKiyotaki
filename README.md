@@ -76,4 +76,5 @@ Cuando un coche abandona el túnel y no hay coches dentro se comprueba:
 - Siempre se da pasa a los coches de la dirección contraria.
 - Si no hay coches esperando en la dirección contraria, se da paso primero a los coches de la dirección actual de nuevo, y luego a la cola de la otra dirección
 
-![](sol4&7.pdf)
+![](sol4$7_1.jpeg)
+![](sol4$7_2.jpeg)
