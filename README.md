@@ -26,12 +26,7 @@ No soluciona el problema de justicia todavía.
 
 ***
 
-## 03_sol_skel
-(Implementado)(Falta comprobar)
-
-***
-
-## Solución 4 - (04_sol_skel)
+## Solución 3 - (03_sol_skel)
 Soluciona el problema de justicia. 
 
 Se utiliza un entero en lugar de una cadena de caracteres para identificar la dirección de coches en el interior del tunel. 
@@ -47,23 +42,7 @@ Cuando el último coche abandona el túnel se abre el paso en la otra dirección
 
 ***
 
-## 05_sol_skel
-Se intenta solucionar el problema de la justicia reforzando la condition. Se introduce dos semáforos más que controlan la entra de coches permitiendo el paso si no hay coche circulando en la otra dirección(análogo a 01_sol_skel) y además si hay menos de un número determinado de coches esperando el el otro sentido.
-
-Esto lo controla la variables: "north_cars_waiting" y "south_cars_waiting" y los condicionales "too_many_north_cars" y "too_many_south_cars".
-
-Las variables K1 y K2 es la cota de coches esperando. Estaría bien hacer que esta variable no fuese constante. Haciendo que por cada coche que pase en una dirección, la variable disminuya de valor hasta 0, permitiendo que los coches en la otra dirección sean más posibles para pasar, ya que restringe los coches de su propia dirección.
-Después se debería reestablecer su valor cuando los coches de la otra dirección empiecen a pasar.
-
-Se ha hecho pruebas para ver que sigue funcionando igual que la versión 1. Pero no se comprobado que solucione el problema. Teóricamente parece que sí lo soluciona.
-
-***
-
-## 06_sol_skel
-
-***
-
-## Solución 7 - (07_sol_skel)
+## Solución 4 - (04_sol_skel)
 Solucionado el problema de justicia. Se inicializa la dirección inicial del túnel a `NONE`. Contamos con variables `north_cars` y `south_cars` que nos indican el número de coches que hay dentro del túnel en cada dirección, y `north_waiting` y `south_waiting` que indican el número de coches que están esperando a entrar en el túnel en cada dirección. Tenemos los siguientes semáforos:
 - `north_entry` / `south_entry` para dejar pasar al norte / sur.
 - `north_queue` / `south_queue` para dejar pasar al norte / sur a la cola del túnel.
@@ -76,5 +55,5 @@ Cuando un coche abandona el túnel y no hay coches dentro se comprueba:
 - Siempre se da pasa a los coches de la dirección contraria.
 - Si no hay coches esperando en la dirección contraria, se da paso primero a los coches de la dirección actual de nuevo, y luego a la cola de la otra dirección
 
-![](sol4$7_1.jpeg)
-![](sol4$7_2.jpeg)
+![](sol34_1.jpeg)
+![](sol34_2.jpeg)

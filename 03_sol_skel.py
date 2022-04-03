@@ -16,14 +16,15 @@ class Monitor():
     def __init__(self):
         self.mutex = Lock()
         
-        self.north_cars = Value('i', 0) #Numero de coches dentro del tunel (north)
-        self.south_cars = Value('i', 0) #Numero de coches dentro del tunel (south)
+        self.north_cars = Value('i', 0) # Numero de coches dentro del tunel (north)
+        self.south_cars = Value('i', 0) # Numero de coches dentro del tunel (south)
 
-        self.north_waiting = Value('i', 0) #Numero de coches esperando (north)
-        self.south_waiting = Value('i', 0) #Numero de coches esperando (south)
+        self.north_waiting = Value('i', 0)
+        self.south_waiting = Value('i', 0)
         
-        self.direction = Value('i', NONE) # Direccion en la que circulan o pueden circular los coches dentro del tunel
-        self.north_entry = Condition(self.mutex)         # open_* es el semaforo que deja pasar al tunel
+        self.direction = Value('i', NONE)               # Direccion en la que circulan o pueden circular los coches dentro del tunel
+
+        self.north_entry = Condition(self.mutex)        # open_* es el semaforo que deja pasar al tunel
         self.south_entry = Condition(self.mutex)
         self.north_queue = Condition(self.mutex)        # queue_* es el semaforo que deja pasar a la cola del tunel
         self.south_queue = Condition(self.mutex)
@@ -32,68 +33,66 @@ class Monitor():
         self.mutex.acquire()
 
         if direction == SOUTH:
+            # Deja pasar a la cola para el grupo siguiente si vienen coches hacia esta direccion o si no hay direccion establecida
             self.north_queue.wait_for(lambda: self.direction.value == NORTH or self.direction.value == NONE)
-            
             self.north_waiting.value += 1
-            
-            self.north_entry.wait_for(lambda: self.south_cars.value == 0 and (self.direction.value == SOUTH or self.direction.value == NONE))
-            
-            self.north_cars.value += 1
-            self.direction.value = SOUTH
-            self.south_queue.notify_all()
-            
+
+            # Deja pasar cuando los de la otra direccion hayan salido
+            self.north_entry.wait_for(lambda: self.south_cars.value == 0)
             self.north_waiting.value -= 1
+            self.north_cars.value += 1
+
+            self.direction.value = SOUTH
+            self.south_queue.notify_all()       # Es necesario notificar el cambio de direccion para llenar la otra cola
+
         else:
             self.south_queue.wait_for(lambda: self.direction.value == SOUTH or self.direction.value == NONE)
-            
             self.south_waiting.value += 1
-            
-            self.south_entry.wait_for(lambda: self.north_cars.value == 0 and (self.direction.value == NORTH or self.direction.value == NONE))
-            
+
+            self.south_entry.wait_for(lambda: self.north_cars.value == 0)
+            self.south_waiting.value -= 1
             self.south_cars.value += 1
+
             self.direction.value = NORTH
             self.north_queue.notify_all()
-            
-            self.south_waiting.value -= 1
+    
         self.mutex.release()
 
     def leaves_tunnel(self, direction):
         self.mutex.acquire()
-        if direction == SOUTH:
+
+        if direction == SOUTH:            		
             self.north_cars.value -= 1
-            if self.north_cars.value == 0: # No hay coches
-                if self.north_waiting.value == 0: #No hay más coches esperando, se cambia la direccion 
-                    self.direction.value = NORTH
-                    self.north_queue.notify_all()
-                    print("Abre sur - ", self.south_waiting.value)
-                self.south_entry.notify_all()
-                if self.south_waiting.value == 0: #No hay coches en la otra direccion esperando
-                    self.direction.value = NONE 
-                    self.north_entry.notify_all() #Se devuelve el turno a la direccion actual(primero)
-                    self.south_queue.notify_all() #Y despues a la cola de la otra direccion(segundo)
+            if self.north_cars.value == 0:           # No hay coches, podemos cambiar la direccion
+                self.direction.value = NONE          # Se restablece la direccion por si vuelven a pasar en el mismo sentido
+
+                # print("Opened S - ", self.south_waiting.value)
+                self.south_entry.notify_all()        # Primero abre el paso al tunel para los de la otra direccion
+
+                self.north_queue.notify_all()
+                self.north_entry.notify_all()        # Abre en la misma direccion si no hay nadie en el otro sitio (previene bloqueos si en uno de los lados no viene nadie)
         else:
             self.south_cars.value -= 1
             if self.south_cars.value == 0:
-                if self.south_waiting.value == 0:
-                    self.direction.value = SOUTH
-                    self.south_queue.notify_all()
-                    print("Abre norte - ", self.north_waiting.value)
+                self.direction.value = NONE
+
+                # print("Opened N - ", self.north_waiting.value)
                 self.north_entry.notify_all()
-                if self.north_waiting.value == 0:
-                    self.direction.value = NONE
-                    self.south_entry.notify_all()
-                    self.north_queue.notify_all()
+
+                self.south_queue.notify_all()
+                self.south_entry.notify_all()
+                    
         self.mutex.release()
 
 def pdir(dir):
-    return 'S' if dir else 'N'
+    return 'N' if dir else 'S'
 
 def delay(n=3):
     time.sleep(random.random()*n)
 
 def car(cid, direction, monitor):
     print(f"car {cid} direction {pdir(direction)} created")
-    delay(1)
+    delay(6)
     print(f"car {cid} heading {pdir(direction)} wants to enter")
     monitor.wants_enter(direction)
     print(f"car {cid} heading {pdir(direction)} enters the tunnel")
