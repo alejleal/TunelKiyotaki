@@ -64,11 +64,16 @@ Se ha hecho pruebas para ver que sigue funcionando igual que la versión 1. Pero
 ***
 
 ## Solución 7 - (07_sol_skel)
-Solucionado el problema de justicia. Se inicializa la dirección inicial del túnel a "none". Contamos con variables "north_cars" y "south_cars" que nos indican el número de coches que hay dentro del túnel en cada dirección, y "north_waiting" y "south_waiting" que indican el número de coches que están esperando a entrar en el túnel en cada dirección. Tenemos los siguientes semáforos:
-- "north_entry" / "south_entry" para dejar pasar al norte / sur.
-- "north_queue" / "south_queue" para dejar pasar al norte / sur a la cola del túnel.
+Solucionado el problema de justicia. Se inicializa la dirección inicial del túnel a `NONE`. Contamos con variables `north_cars` y `south_cars` que nos indican el número de coches que hay dentro del túnel en cada dirección, y `north_waiting` y `south_waiting` que indican el número de coches que están esperando a entrar en el túnel en cada dirección. Tenemos los siguientes semáforos:
+- `north_entry` / `south_entry` para dejar pasar al norte / sur.
+- `north_queue` / `south_queue` para dejar pasar al norte / sur a la cola del túnel.
 
 Cuando un coche quiere entrar en el túnel se pone a la cola si su dirección es la contraria a la del túnel o no hay dirección establecida todavía. 
-Los coches que estan esperando entran cuando han salido todos los que estén circulando en sentido contrario al suyo.
+Los coches que estan esperando entran cuando han salido todos los que estén circulando en sentido contrario al suyo y la dirección coincide con la dirección actual del túnel.
 
-Cuando un coche abandona el túnel y no hay coches dentro podemos cambiar la dirección de este siempre que no haya más coches esperando a entrar en la misma dirección que el que acaba de salir, esto evita que haya bloqueos.
+Cuando un coche abandona el túnel y no hay coches dentro se comprueba:
+- Si no hay coches esperando en la dirección actual, se cambia de dirección y se da paso a la cola de la dirección actual.
+- Siempre se da pasa a los coches de la dirección contraria.
+- Si no hay coches esperando en la dirección contraria, se da paso primero a los coches de la dirección actual de nuevo, y luego a la cola de la otra dirección
+
+![](sol4&7.pdf)

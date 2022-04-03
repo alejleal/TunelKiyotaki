@@ -19,13 +19,10 @@ class Monitor():
         self.north_cars = Value('i', 0) #Numero de coches dentro del tunel (north)
         self.south_cars = Value('i', 0) #Numero de coches dentro del tunel (south)
 
-        self.north_waiting = Value('i', 0) #Numero de coches esperando
-        self.south_waiting = Value('i', 0)
-        
-
+        self.north_waiting = Value('i', 0) #Numero de coches esperando (north)
+        self.south_waiting = Value('i', 0) #Numero de coches esperando (south)
         
         self.direction = Value('i', NONE) # Direccion en la que circulan o pueden circular los coches dentro del tunel
-
         self.north_entry = Condition(self.mutex)         # open_* es el semaforo que deja pasar al tunel
         self.south_entry = Condition(self.mutex)
         self.north_queue = Condition(self.mutex)        # queue_* es el semaforo que deja pasar a la cola del tunel
@@ -43,14 +40,9 @@ class Monitor():
             
             self.north_cars.value += 1
             self.direction.value = SOUTH
+            self.south_queue.notify_all()
             
             self.north_waiting.value -= 1
-            """
-            if self.north_waiting.value == 0:
-                self.direction.value = NORTH
-                self.north_queue.notify_all()
-                print("Abre sur - ", self.south_waiting.value)
-            """
         else:
             self.south_queue.wait_for(lambda: self.direction.value == SOUTH or self.direction.value == NONE)
             
@@ -60,61 +52,37 @@ class Monitor():
             
             self.south_cars.value += 1
             self.direction.value = NORTH
+            self.north_queue.notify_all()
             
             self.south_waiting.value -= 1
-            """
-            if self.south_waiting.value == 0:
-                self.direction.value = SOUTH
-                self.south_queue.notify_all()
-                print("Abre norte - ", self.north_waiting.value)
-            """
-                
-    
         self.mutex.release()
 
     def leaves_tunnel(self, direction):
         self.mutex.acquire()
         if direction == SOUTH:
-            
-            
             self.north_cars.value -= 1
-            if self.north_cars.value == 0: # No hay coches, podemos cambiar la direccion
-                if self.north_waiting.value == 0:
+            if self.north_cars.value == 0: # No hay coches
+                if self.north_waiting.value == 0: #No hay más coches esperando, se cambia la direccion 
                     self.direction.value = NORTH
                     self.north_queue.notify_all()
                     print("Abre sur - ", self.south_waiting.value)
-                
-                self.south_entry.notify_all()        # Primero abre el paso al tunel para los de la otra direccion
-                
-                #self.north_queue.notify_all()
-                #self.north_entry.notify_all()        # Abre en la misma direccion si no hay nadie en el otro sitio (previene bloqueos si en uno de los lados no viene nadie)
-                if self.south_waiting.value == 0:
-                    self.direction.value = NONE
-                    self.north_entry.notify_all()
-                    self.south_queue.notify_all()
-                    
-                    
+                self.south_entry.notify_all()
+                if self.south_waiting.value == 0: #No hay coches en la otra direccion esperando
+                    self.direction.value = NONE 
+                    self.north_entry.notify_all() #Se devuelve el turno a la direccion actual(primero)
+                    self.south_queue.notify_all() #Y despues a la cola de la otra direccion(segundo)
         else:
-            
-            
             self.south_cars.value -= 1
             if self.south_cars.value == 0:
                 if self.south_waiting.value == 0:
                     self.direction.value = SOUTH
                     self.south_queue.notify_all()
                     print("Abre norte - ", self.north_waiting.value)
-
-                #print("Abre norte - ", self.north_waiting.value)
                 self.north_entry.notify_all()
-
-                #self.south_queue.notify_all()
-                #self.south_entry.notify_all()
                 if self.north_waiting.value == 0:
                     self.direction.value = NONE
                     self.south_entry.notify_all()
                     self.north_queue.notify_all()
-                    
-                
         self.mutex.release()
 
 def pdir(dir):
