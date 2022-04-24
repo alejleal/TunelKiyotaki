@@ -11,7 +11,7 @@ Se configura el monitor con dos semáforos. Permite el paso si el numero de coch
 - Justicia: No se controla el orden de paso de los coches. Por tanto podría pasar que los coches de una dirección se queden esperando hasta que hayan pasado todos los de la otra dirección.
 - Los coches de una misma dirección no tienen establecido ningún orden. Un coche esperando en una dirección puede entrar después de otro coche posterior a él en la misma dirección.
 
-![](sol1.jpeg)
+![](sol1.jpg)
 
 ***
 
@@ -22,7 +22,7 @@ En este caso, se controla el paso de los coches comprobando la dirección de cir
 
 No soluciona el problema de justicia todavía.
 
-![](sol2.jpeg)
+![](sol2.jpg)
 
 ***
 
